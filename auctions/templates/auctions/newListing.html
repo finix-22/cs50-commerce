@@ -1,0 +1,13 @@
+{% extends 'auctions/layout.html' %}
+
+{% block title %}
+    Create Listing
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'create_listing' %}" method="post" accept-charset="utf-8" enctype="multipart/form-data"><!--------------------->
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" />
+    </form>
+{% endblock %}

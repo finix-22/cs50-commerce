@@ -1,0 +1,49 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <div id="auctionDiv">
+        <span class="imgSpan2" style="
+                    background-image: url('{{ item.image.url }}');
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+        " >
+        </span>
+        <span><p>Name:</p> {{ item.title }}</span>
+        <span><p>Description:</p> {{ item.text }}</span>
+        <span><p>Current Price:</p> {{ item.currentPrice }}</span>
+        <span><p>Category:</p> {{ item.category }}</span>
+    </div>
+    {% if request.user == item.itemSoldAs.userId %}
+        <a href="{% url 'close' item.itemSoldAs.id %}">Close Listing</a>
+    {% else %}
+        <form action="{% url 'itemPage' item.itemSoldAs.id %}" method="post" accept-charset="utf-8">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Bid on Item" />
+        </form>
+    {% endif %}
+    {% if not item.itemSoldAs.id in watchlistItems %}
+        <a href="{% url 'watchlist' item.itemSoldAs.id %}">Add To Watchlist</a>
+    {% else %}
+        <a href="{% url 'watchlist' item.itemSoldAs.id 'remove' %}">Remove From Watchlist</a>
+    {% endif %}
+    <h2>Add a Comment</h2>
+    <form action="{% url 'comment' item.itemSoldAs.id %}" method="get" accept-charset="utf-8">
+        {{ comment_form }}
+        <input type="submit"/>
+    </form>
+    <h3>Comments</h3>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <p>
+                    <span>{{ comment.userId }}</span>
+                    {{ comment.comment }}
+                </p>
+            </li>
+            {% empty %}
+                <li>No comment yet..</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

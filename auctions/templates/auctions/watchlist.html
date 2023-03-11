@@ -1,0 +1,21 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    {% for item in auctions %}
+        <div id="auctionDiv">
+            <span class="imgSpan2" style="
+                        background-image: url('{{ item.image.url }}');
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+            " >
+            </span>
+            <span><p>Name:</p> {{ item.title }}</span>
+            <span><p>Description:</p> {{ item.text|safe }}</span>
+            <span><p>Current Price:</p> {{ item.currentPrice }}</span>
+            <span><p>Category:</p> {{ item.category }}</span>
+        </div>
+        {% empty %}
+            <p>You don not have any item on your watchlist yet...</p>
+    {% endfor %}
+{% endblock %}

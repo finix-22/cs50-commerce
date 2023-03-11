@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+        <div class="wrapper">
+            {% for item in descriptions %}
+                <div class="card">
+                    <a class="a" href="{% url 'itemPage' item.itemSoldAs.id %}">
+                        <span class="imgSpan" style="
+                            background-image: url('{{ item.image.url }}');
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            ">
+                        </span>
+                        <p class="ul">
+                            <span class="first">{{ item.title }}</span>
+                            {% if item.currentPrice < item.startingPrice %}
+                                <span class="second">${{ item.startingPrice }}</span>
+                            {% else %}
+                                <span class="second">${{ item.currentPrice }}</span>
+                            {% endif %}
+                            <span class="third">{{ item.category }}</span>
+                        </p>
+                    </a>
+                </div>
+                {% empty %}
+                    <div class="coloumn">
+                        No Items currently listed
+                    </div>
+            {% endfor %}
+        </div>
+{% endblock %}
